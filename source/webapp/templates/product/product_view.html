@@ -1,0 +1,36 @@
+
+{% extends 'base.html' %}
+
+{% block nav %}
+    <li class="nav-item">
+          <a class="nav-link" href="{% url 'create' %}">Add Item</a>
+    </li>
+    <li class="nav-item">
+          <a class="nav-link" href="{% url 'update' product.pk %}">Update</a>
+    </li>
+    <li class="nav-item">
+          <a class="nav-link text-danger" href="{% url 'delete' product.pk %}">Delete</a>
+    </li>
+{% endblock %}
+
+{% block content %}
+
+
+
+         <div class="card mt-5 border-success" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title fs-2">{{ product.title }}</h5>
+                <p class="card-text fs-4">{{ product.description }}</p>
+              </div>
+              <ul class="list-group list-group-flush fs-5">
+                <li class="list-group-item">Category: {{ product.category}}</li>
+                <li class="list-group-item">Price: {{ product.price }} kgs</li>
+                <li class="list-group-item">Stocks: {{ product.quantity }}</li>
+                  <li class="list-group-item">Unit: {{ product.unit }}</li>
+                  <li class="list-group-item"> {% include 'partial/cart_item.html' %}</li>
+              </ul>
+
+        </div>
+
+{% endblock %}
+

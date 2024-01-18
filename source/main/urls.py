@@ -17,6 +17,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from django.contrib import admin
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+from .drf_yasg import urlpatterns as urls_swagger
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
-]
+      path('admin/', admin.site.urls),
+      path('products/', include("webapp.urls")),
+      # path('api/v1/', include('api.urls')),
+
+
+
+              ] + urls_swagger
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
