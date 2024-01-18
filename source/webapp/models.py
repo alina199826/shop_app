@@ -29,6 +29,7 @@ class Product(models.Model):
         Category,
         on_delete=models.CASCADE,
         related_name='ProductNormal',
+        verbose_name='Категория'
 
     )
 
@@ -46,10 +47,7 @@ class Product(models.Model):
     price = models.IntegerField(
         _('Цена'),
     )
-    sum = models.IntegerField(
-        _('Сумма'),
-        default=0
-    )
+
 
     def __str__(self):
         return f'наименование: {self.title}, кол-во: {self.quantity}'
@@ -62,14 +60,22 @@ class Product(models.Model):
         self.sum = self.quantity * self.price
         return super().save(*args, **kwargs)
 
+    class Meta:
+        verbose_name = _('Товар')
+
 class OrderProduct(models.Model):
     product = models.ForeignKey('webapp.Product', on_delete=models.CASCADE, verbose_name='Товар')
     order = models.ForeignKey('webapp.Order', related_name='order_product', on_delete=models.CASCADE, verbose_name='Заказ')
     qty = models.PositiveIntegerField(verbose_name='Количество')
 
+    def __str__(self):
+        return f'продукт из заказа: {self.product.title}, кол-во: {self.qty}'
+
     def total_amount(self):
         return self.product.price * self.qty
 
+    class Meta:
+        verbose_name = _('Товар из корзины')
 
 class Order(models.Model):
     name = models.CharField(max_length=100, null=False, blank=False, verbose_name='Имя пользователя')
@@ -79,3 +85,10 @@ class Order(models.Model):
     products = models.ManyToManyField('webapp.Product', related_name='order', through='webapp.OrderProduct',
                                       through_fields=['order', 'product'], verbose_name='Товары')
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True, blank=True, verbose_name='Пользователь')
+
+    def __str__(self):
+        return f'заказ {self.name}'
+
+
+    class Meta:
+        verbose_name = _('Заказ')

@@ -28,6 +28,14 @@ class OrderProductSerializer(serializers.ModelSerializer):
     def get_total_amount(self, obj):
         return obj.total_amount()
 
+    def perform_create(self, serializer):
+        instance = serializer.save()
+        self.update_product_quantity(instance.product, instance.qty)
+
+    def update_product_quantity(self, product, qty):
+        product.quantity -= qty
+        product.save()
+
 class OrderSerializer(serializers.ModelSerializer):
     products = OrderProductSerializer(many=True, read_only=True)
 

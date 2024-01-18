@@ -5,7 +5,7 @@ from webapp.models import Product, Order
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['title',  'price', 'category', 'unit', 'quantity', 'sum']
+        fields = ['title',  'price', 'category', 'unit', 'quantity']
 
 
 class OrderForm(forms.ModelForm):
