@@ -23,7 +23,3 @@ class RegisterView(CreateView):
         if not next_url:
             next_url = reverse('index')
         return next_url
-
-
-
-

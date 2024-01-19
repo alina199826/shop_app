@@ -26,9 +26,12 @@
                 <li class="nav-item">
                     <p class="nav-link" >Hi, {{ request.user.username }}</p>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'logout' %}">Exit</a>
-                </li>
+      <li class="nav-item">
+        <form method="post" action="{% url 'logout' %}?next={{ request.get_full_path }}">
+            {% csrf_token %}
+            <button type="submit" class="nav-link" style="border: none; background: none; cursor: pointer;">Exit</button>
+        </form>
+    </li>
             {% else %}
                 <li class="ms-autu nav-item ">
                     <a class="btn  btn-info" href="{% url 'login' %}?next={% if request.GET.next  %}{{ request.GET.next }}{% else %}{{ request.get_full_path }}{% endif %}">Log in</a>
@@ -64,7 +67,16 @@
 
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+
+       const socket = new WebSocket('ws://' + window.location.host + '/ws/notifications/');
+
+    socket.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+        alert(data.message);  //
+    };
+</script>
 </body>
 
 
