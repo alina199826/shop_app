@@ -1,7 +1,7 @@
+from accounts.views import RegisterView
 from .views.product import IndexViews, ProductCreateView, ProductDeleteView, ProductView, ProductUpdateView
 from .views.cart import CartList, CartDelete, OrderCreate, OrderList, CartDeleteOne, AddItemToCart
 from django.contrib.auth.views import LoginView, LogoutView
-from accounts.views import RegisterView
 from django.urls import path
 
 
@@ -19,6 +19,6 @@ urlpatterns = [
     path('orders/', OrderList.as_view(), name='order_list'),
     path('login/', LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
-    path('create/', RegisterView.as_view(), name='create'),
+    path('create/', RegisterView.as_view(), name='user_create'),
 
 ]

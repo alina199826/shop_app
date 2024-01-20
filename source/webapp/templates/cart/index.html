@@ -8,8 +8,7 @@
 
 {% block content %}
 
-    <h1>Cart</h1>
-
+    <h1>Cart </h1>
     <table class="table table-striped">
         <thead>
         <tr>
@@ -26,8 +25,8 @@
                 <th>{{ cart.product.title }}</th>
                 <td>{{ cart.qty }}</td>
                 <td>{{ cart.product.price }}</td>
-                <td>{{ product_total }}</td>
-                <td><a href="{% url 'cart_delete' cart.product.pk %}">Delete</a></td>
+                <td>{{ cart.product_total }}</td>
+{#                <td><a href="{% url 'cart_delete' cart.product.pk %}">Delete</a></td>#}
                  <td><a href="{% url 'cart_delete_one' cart.product.pk %}">Delete One</a></td>
             </tr>
         {% endfor %}

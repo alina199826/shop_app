@@ -1,5 +1,5 @@
 from django.contrib import admin
-from webapp.models import Product, Category
+from webapp.models import Product, Category, Order, OrderProduct
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['title', 'quantity', 'price', 'category']
@@ -8,3 +8,5 @@ class ProductAdmin(admin.ModelAdmin):
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Category)
+admin.site.register(OrderProduct)
+admin.site.register(Order)

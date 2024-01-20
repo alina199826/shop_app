@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
@@ -19,12 +20,14 @@ class Category(models.Model):
         verbose_name = _('Категория')
         verbose_name_plural = _('Категория товаров')
 
-
 class Product(models.Model):
     title = models.CharField(
         _('Наименование'),
         max_length=250
     )
+    price = models.DecimalField(
+        _('Цена'), max_digits=10, decimal_places=2)
+
     category = models.ForeignKey(
         Category,
         on_delete=models.CASCADE,
@@ -44,9 +47,6 @@ class Product(models.Model):
         _('Кол-во'),
         default=1
     )
-    price = models.IntegerField(
-        _('Цена'),
-    )
 
 
     def __str__(self):
@@ -56,23 +56,25 @@ class Product(models.Model):
         return reverse('view', kwargs={'pk': self.pk})
 
 
-    def save(self, *args, **kwargs):
-        self.sum = self.quantity * self.price
-        return super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = _('Товар')
+
 
 class OrderProduct(models.Model):
     product = models.ForeignKey('webapp.Product', on_delete=models.CASCADE, verbose_name='Товар')
     order = models.ForeignKey('webapp.Order', related_name='order_product', on_delete=models.CASCADE, verbose_name='Заказ')
     qty = models.PositiveIntegerField(verbose_name='Количество')
 
+    def total_order_amount(self):
+        total_amount = 0
+        for order_product in self.order_product.all():
+            total_amount += order_product.total_amount()
+        return total_amount
+
     def __str__(self):
         return f'продукт из заказа: {self.product.title}, кол-во: {self.qty}'
 
-    def total_amount(self):
-        return self.product.price * self.qty
 
     class Meta:
         verbose_name = _('Товар из корзины')
@@ -92,3 +94,4 @@ class Order(models.Model):
 
     class Meta:
         verbose_name = _('Заказ')
+

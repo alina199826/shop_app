@@ -50,8 +50,8 @@ class CartList(TemplateView):
         context['total'] = total
         context['form'] = OrderForm
         return context
-class CartDelete(View):
 
+class CartDelete(View):
 
     def get(self, request, pk, *args, **kwargs):
         cart = self.request.session.get('cart', {})
@@ -60,6 +60,7 @@ class CartDelete(View):
         if pk in cart:
             cart.pop(pk)
             request.session['cart'] = cart
+
         return redirect('cart_index')
 
 
